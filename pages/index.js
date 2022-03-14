@@ -56,7 +56,7 @@ const Home = () => {
                     </IconButton>
                 </Paper>
             </Container>
-            <Container maxWidth="md" className={classes.cardGrid}>
+            <Container maxWidth="lg" className={classes.cardGrid}>
                 <Typography component ='h2' variant='h4' align='center' color='textPrimary'>
                     Destaques
                 </Typography>
