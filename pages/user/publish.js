@@ -14,8 +14,9 @@ import {
     InputAdornment,
     MenuItem,
     FormHelperText,
+    Input,
 }
-from '@material-ui/core'
+    from '@material-ui/core'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { makeStyles } from '@material-ui/core/styles'
@@ -86,17 +87,25 @@ const useStyles = makeStyles((theme) => ({
             width: '100%',
             height: '100%',
         }
+    },
+    inputLabel: {
+        fontWeight: 400,
+        color: theme.palette.primary.main,
     }
 }))
 
 
 const validationSchema = yup.object().shape({
     title: yup.string()
-    .min(6, 'Escreva um título maior')
-    .max(100, 'Título muito grande')
-    .required('Campo obrigatório'),
+        .min(6, 'Escreva um título maior')
+        .max(100, 'Título muito grande')
+        .required('Campo obrigatório'),
 
-    category: yup.string().required('Campo obrigatório')
+    category: yup.string().required('Campo obrigatório'),
+    
+    description: yup.string()
+        .min(50, 'Escreva uma descrição de pelo menos 50 caracteres')
+        .required('Campo obrigatório'),
 })
 
 
@@ -125,9 +134,10 @@ const Publish = () => {
                 initialValues={{
                     title: '',
                     category: '',
+                    description: '',
                 }}
                 validationSchema={validationSchema}
-                onSubmit={()=>{
+                onSubmit={() => {
 
                 }}
             >
@@ -154,32 +164,32 @@ const Publish = () => {
 
                                 <Container maxWidth="md" className={classes.boxContainer}>
                                     <Box className={classes.box}>
-                                        <Typography component="h6" variant="h6" color="textPrimary">
-                                            Título do Anúncio
-                                        </Typography>
-                                        <TextField
-                                            name="title"
-                                            value={values.title}
-                                            onChange={handleChange}
-                                            label="ex.: Celular Marca Modelo"
-                                            size='small'
-                                            fullWidth
-                                            error={errors.title}
-                                            helperText= {errors.title}
-                                        />
+                                       
+                                       
+                                        <FormControl error={errors.title} fullWidth>
+                                            <InputLabel className={classes.inputLabel}>Título do Anúncio</InputLabel>
+                                            <Input
+                                                name="title"
+                                                value={values.title}
+                                                onChange={handleChange}
+                                                helperText={errors.title}
+                                            />
+                                            <FormHelperText>
+                                                {errors.category}
+                                            </FormHelperText>
+                                        </FormControl>
                                         <br></br>
                                         <br></br>
-                                        <Typography component="h6" variant="h6" color="textPrimary">
-                                            Categoria
-                                        </Typography>
+                                      
                                         <FormControl error={errors.category} fullWidth>
+                                        <InputLabel className={classes.inputLabel}>Categoria</InputLabel>
                                             <Select
                                                 name="category"
                                                 value={values.category}
                                                 fullWidth
                                                 onChange={handleChange}
                                             >
-                                                
+
                                                 <MenuItem value="Bebê e Criança">Bebê e Criança</MenuItem>
                                                 <MenuItem value="Agricultura">Agricultura</MenuItem>
                                                 <MenuItem value="Moda">Moda</MenuItem>
@@ -199,7 +209,7 @@ const Publish = () => {
                                             <FormHelperText>
                                                 {errors.category}
                                             </FormHelperText>
-                                        </FormControl> 
+                                        </FormControl>
                                     </Box>
                                 </Container>
 
@@ -252,17 +262,20 @@ const Publish = () => {
 
                                 <Container maxWidth="md" className={classes.boxContainer}>
                                     <Box className={classes.box}>
-                                        <Typography component="h6" variant="h6" color="textPrimary">
-                                            Descrição
-                                        </Typography>
-                                        <Typography component="div" variant="body2" color="textPrimary">
-                                            Escreva os detalhes de seu produto.
-                                        </Typography>
-                                        <TextField
+                                      
+                                       
+                                        <FormControl error={errors.description} fullWidth>
+                                        <InputLabel className={classes.inputLabel}>Escreva os detalhes do que está vendendo</InputLabel>    
+                                        <Input
+                                            name="description"
                                             multiline rows={6}
                                             variant="outlined"
-                                            fullWidth
+                                            
                                         />
+                                        <FormHelperText>
+                                            { errors.category}
+                                        </FormHelperText>
+                                        </FormControl>
                                     </Box>
                                 </Container>
 
