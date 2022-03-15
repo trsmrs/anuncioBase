@@ -1,4 +1,4 @@
-import TemplateDefault from '../src/templates/Default'
+import TemplateDefault from '../../src/templates/Default'
 import { Container, Grid, Box, Typography, Chip, Card, CardHeader, Avatar, CardMedia } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Carousel from 'react-material-ui-carousel'
