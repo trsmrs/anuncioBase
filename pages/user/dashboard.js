@@ -42,7 +42,7 @@ export default function Home() {
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={4}>
             <Card
-              image={'https://source.unsplash.com/random'}
+              image={'https://source.unsplash.com/random?a=1'}
               title="ProdutoX"
               subtitle="R$ 60,00"
               actions={
@@ -59,7 +59,7 @@ export default function Home() {
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <Card
-              image={'https://source.unsplash.com/random'}
+              image={'https://source.unsplash.com/random?a=2'}
               title="ProdutoX"
               subtitle="R$ 60,00"
               actions={
@@ -76,7 +76,7 @@ export default function Home() {
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <Card
-              image={'https://source.unsplash.com/random'}
+              image={'https://source.unsplash.com/random?a=4'}
               title="ProdutoX"
               subtitle="R$ 60,00"
               actions={
