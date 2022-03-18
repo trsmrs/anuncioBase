@@ -24,7 +24,7 @@ import { Alert } from '@material-ui/lab'
 
 
 
-const Signin = () => {
+const Signin = ({APP_URL}) => {
   const classes = useStyles()
   const router = useRouter()
   const { setToasty } = useToasty()
@@ -32,8 +32,9 @@ const Signin = () => {
 console.log(session)
 
 
-const handleGoogleLogin = () => {signIn('google',{
-  callbackUrl: 'http://localhost:3000/user/dashboard'
+const handleGoogleLogin = () => {
+  signIn('google',{
+  callbackUrl: `${process.env.APP_URL}/user/dashboard`
 })
 }
   const handleFormSubmit = async values => {
@@ -161,5 +162,9 @@ const handleGoogleLogin = () => {signIn('google',{
   )
 
 }
-
+ Signin.getInitialProps = async function(){
+   return {
+     APP_URL: process.env.APP_URL
+   }
+ }
 export default Signin
