@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { signOut, useSession } from 'next-auth/client'
 import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link'
-import {AppBar,
+import {
+  AppBar,
   Toolbar,
   Typography,
   Button,
@@ -11,10 +13,10 @@ import {AppBar,
   MenuItem,
   Divider,
   Menu,
-  
 
-       } from '@material-ui/core';
-import {AccountCircle, MenuIcon} from '@material-ui/icons';
+
+} from '@material-ui/core';
+import { AccountCircle, MenuIcon } from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  nameIcon:{
+  nameIcon: {
     margin: ' 0 10px',
   },
-  divider:{
+  divider: {
     marginTop: 4,
   }
 }));
@@ -38,55 +40,59 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtonAppBar() {
   const classes = useStyles();
   const [anchorUserMenu, setAnchorUserMenu] = useState(false)
-
+  const [session] = useSession()
   const openUserMenu = Boolean(anchorUserMenu)
 
 
   return (
     <>
       <AppBar position="static" elevation={3}>
-       <Container maxWidth='lg'>
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Anuncios CloneOL
-          </Typography>
-          <Link href={'/user/publish'} passHref>
-          <Button color="inherit" variant="outlined">
-            Anunciar e Vender
-          </Button>
-          </Link>
-          <IconButton color="secondary" onClick={(e)=>{setAnchorUserMenu(e.currentTarget)}}>
+        <Container maxWidth='lg'>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              Anuncios CloneOL
+            </Typography>
+            <Link href={session ? '/user/publish' : '/auth/signin'} passHref>
+              <Button color="inherit" variant="outlined">
+                Anunciar e Vender
+              </Button>
+            </Link>
             {
-              true === true
-             ? <Avatar src=""/>
-             : <AccountCircle />
+              session
+                ? (
+                  <IconButton color="secondary" onClick={(e) => { setAnchorUserMenu(e.currentTarget) }}>
+                   {
+                     session.user.image
+                      ? <Avatar src={session.user.image} />
+                      : <AccountCircle />
+                   }
+                    <Typography variant="subtitle2" color="secondary" className={classes.nameIcon}>
+                      {session.user.name}
+                    </Typography>
+                  </IconButton>
+                ): null
             }
-          <Typography variant="subtitle2" color="secondary" className={classes.nameIcon}>
-            Tiago Machado
-          </Typography>
-          </IconButton>
+            <Menu anchorEl={anchorUserMenu}
+              open={anchorUserMenu}
+              onClose={() =>
+                setAnchorUserMenu(null)}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
 
-          <Menu anchorEl={anchorUserMenu}
-           open={anchorUserMenu}
-           onClose={()=>
-             setAnchorUserMenu(null)}
-             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-             }}
-           
-          >   
-           <Link href="/user/dashboard" passHref> 
-            <MenuItem>Meus anúncios</MenuItem>
-            </Link>
-            <Link href="/user/publish" passHref>
-            <MenuItem>Publicar novos anúncios</MenuItem>
-            </Link>
-            <Divider className={classes.divider}/>
-            <MenuItem>Sair</MenuItem>
+            >
+              <Link href="/user/dashboard" passHref>
+                <MenuItem>Meus anúncios</MenuItem>
+              </Link>
+              <Link href="/user/publish" passHref>
+                <MenuItem>Publicar novos anúncios</MenuItem>
+              </Link>
+              <Divider className={classes.divider} />
+              <MenuItem onClick={()=> signOut({callbackUrl: '/'})}>Sair</MenuItem>
 
-          </Menu>
-        </Toolbar>
+            </Menu>
+          </Toolbar>
         </Container>
       </AppBar>
     </>
