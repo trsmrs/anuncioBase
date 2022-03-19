@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import {useRouter} from 'next/router'
 import {
     Button,
     Select,
@@ -15,27 +16,62 @@ import {
     from '@material-ui/core'
 
 import { Formik } from 'formik'
-
-
-
-
-
 import TemplateDefault from '../../../src/templates/Default'
 import { initialValues, validationSchema } from './formValues'
 import useStyles from './styles'
 import FileUpload from '../../../src/components/FileUpload'
+import axios from 'axios'
+import useToasty from '../../../src/contexts/Toasty'
+
 
 const Publish = () => {
     const classes = useStyles()
+    const { setToasty} = useToasty()
+    const router = useRouter()
     
+    const handleSuccess = () => {
+        setToasty({
+            open: true,
+            text: 'Anúncio cadastrado com sucesso.',
+            severity: 'success',
+        })
+
+        router.push('/user/dashboard')
+    }
+
+    const handleError = () =>{
+        setToasty({
+            open: true,
+            text: 'Ocorreu um erro, tente novamente.',
+            severity: 'error',
+        })
+    }
+
+    const handleFormSubmit = (values) =>{
+        const formData = new FormData()
+
+        for(let field in values){
+            if(field === 'files'){
+                values.files.forEach(file =>{
+                    formData.append('files', file)
+                })
+
+            } else {
+                formData.append(field, values[field])
+            }
+        }
+
+        axios.post('/api/products', formData)
+        .then(handleSuccess)
+        .catch(handleError)
+    }
+
     return (
         <TemplateDefault>
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={() => {
-
-                }}
+                onSubmit={handleFormSubmit}
             >
                 {
                     ({
@@ -211,7 +247,11 @@ const Publish = () => {
 
                                 <Container maxWidth="md" className={classes.boxContainer}>
                                     <Box textAlign="right">
-                                        <Button type='submit' variant="contained" color='primary' className={classes.buttonPubli}>
+                                        <Button
+                                        type='submit'
+                                        variant="contained"
+                                        color='primary'
+                                        >
                                             Publicar Anúncio
                                         </Button>
                                     </Box>
